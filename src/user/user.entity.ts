@@ -12,7 +12,7 @@ export class User {
     email:string
     @Column()
     password:string
-    @Column()
+    @Column({nullable:true,default:null})
     refresh_token:string
     @CreateDateColumn()
     create_at:Date
@@ -20,6 +20,8 @@ export class User {
     update_at: Date;
     @Column({ default: 1 })
     status: number;
+    @Column({nullable:true,default:null})
+    avatar:string
  
 
 }
