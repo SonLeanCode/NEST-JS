@@ -64,10 +64,20 @@ export class UserController {
            }else{
             const  fileSize = parseInt(req.headers['content-length'])  
             if(fileSize > 1024 * 1024 * 5){
+                // 1024 -> 1KB , 1024 * 1024 -> 1MB -> 1024 * 1024 * 5 = 5MB
                 req.fileValidationError = `File  size is too large . Accepted file size is less than  5 MB`;
                 cb(null,false)
             }else{
                 cb(null,true)
+             // Khi dùng return, tất cả các tác vụ trong hàm sẽ chạy tuần tự, chương trình sẽ không dừng lại cho đến khi tất cả 
+             //các tác vụ trong hàm hoàn tất.
+            //Vấn đề: return không thể xử lý các lỗi bất đồng bộ như quá trình upload file. Vì vậy, nó chỉ trả về
+            //  kết quả và không thể báo lỗi rõ ràng trong trường hợp có sự cố trong quá trình upload.
+             // tất cả các tác vụ trong hàm hoàn tất vì vậy  nó chỉ trả về kết quả mà không thể nào báo lỗi như upfile ,
+             // cb thì nó  là  bất đồng bộ cb cho phép bạn kiểm tra lỗi ngay lập tức và dừng quá trình upload file nếu có lỗi
+             // (bằng cách gọi cb(null, false)).
+             //Hệ thống sẽ chờ cho đến khi callback trả về kết quả (nếu có lỗi, nó sẽ báo lỗi và 
+             //dừng lại; nếu không có lỗi, nó sẽ tiếp tục với các bước tiếp theo).
             }
            }
         }
